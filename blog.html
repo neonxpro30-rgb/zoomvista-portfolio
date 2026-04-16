@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Art of Timeless Storytelling — Naksh Gupta</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .blog-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 160px 5% 80px;
+    }
+
+    .blog-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .blog-header-accent {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .blog-title {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      color: var(--text-light);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .blog-meta {
+      font-size: 0.9rem;
+      color: var(--text-light-muted);
+      letter-spacing: 1px;
+    }
+
+    .blog-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-light-muted);
+    }
+
+    .blog-content p {
+      margin-bottom: 30px;
+    }
+
+    .blog-content p.lead {
+      font-size: 1.3rem;
+      color: var(--text-light);
+      font-weight: 300;
+      margin-bottom: 40px;
+      border-left: 2px solid var(--accent-gold);
+      padding-left: 20px;
+    }
+
+    .blog-quote {
+      margin: 50px 0;
+      padding: 40px;
+      background: var(--bg-dark-card);
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .blog-quote::before {
+      content: '"';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      color: var(--accent-gold);
+      opacity: 0.2;
+      line-height: 1;
+    }
+
+    .blog-quote p {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      color: var(--text-light);
+      margin-bottom: 0;
+      z-index: 1;
+      position: relative;
+    }
+
+    .highlight-text {
+      color: var(--accent-gold);
+    }
+
+    @media (max-width: 768px) {
+      .blog-title {
+        font-size: 2.5rem;
+      }
+
+      .blog-content p.lead {
+        font-size: 1.15rem;
+      }
+
+      .blog-quote p {
+        font-size: 1.4rem;
+      }
+    }
+
+    /* Additions for images */
+    .blog-banner {
+      width: 100%;
+      height: 450px;
+      object-fit: cover;
+      object-position: center 25%;
+      border-radius: 12px;
+      margin-bottom: 50px;
+      margin-top: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .blog-inline-img {
+      float: right;
+      width: 45%;
+      margin-left: 40px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .blog-inline-img {
+        float: none;
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 30px;
+      }
+
+      .blog-banner {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+
+<body style="background: var(--bg-dark); color: var(--text-light);">
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar scanned scrolled" id="navbar" style="background: rgba(10, 10, 10, 0.95);">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <img src="logo.jpg" alt="ZoomVista Logo" class="nav-logo">
+        <span class="nav-name"><span>Z</span>oomVista</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html#home">Home</a>
+        <a href="index.html#portfolio">Portfolio</a>
+        <a href="index.html#reels">Reels</a>
+        <a href="index.html#reviews">Reviews</a>
+        <a href="feedback.html">Client Love</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html#home">Home</a>
+    <a href="index.html#portfolio">Portfolio</a>
+    <a href="index.html#reels">Reels</a>
+    <a href="index.html#reviews">Reviews</a>
+    <a href="feedback.html">Client Love</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+
+  <!-- ===== BLOG ARTICLE ===== -->
+  <main class="blog-container">
+    <header class="blog-header reveal">
+      <span class="blog-header-accent">The Journey</span>
+      <h1 class="blog-title">The Art of <br>Timeless Storytelling</h1>
+      <div class="blog-meta">BY PRIYANSHU (NAKSH GUPTA) • ZOOMVISTA</div>
+
+      <!-- Banner Image -->
+      <img src="assets/IMG_20260415_025946.jpg" alt="Naksh Gupta Creative Direction"
+        class="blog-banner reveal reveal-delay-1">
+    </header>
+
+    <article class="blog-content">
+      <p class="lead reveal reveal-delay-1">Every great film isn’t just seen; it is felt. For me, a wedding film is not
+        merely a compilation of events—it is a visual symphony of fleeting, unrepeatable emotions.</p>
+
+      <p class="reveal">As Priyanshu—known professionally to the industry as Naksh Gupta—my absolute obsession has been
+        preserving an era inside a single frame. Editing, in its purest cinematic form, is the delicate, invisible
+        thread that strings raw, unscripted moments into timeless art.</p>
+
+      <div class="blog-quote reveal">
+        <p>Constraints build discipline. Perfection is born from absolute focus, not just high-end tools.</p>
+      </div>
+
+      <!-- Inline Profile Image -->
+      <img src="assets/naksh-photo.jpg" alt="Naksh Gupta Photo" class="blog-inline-img reveal">
+
+      <p class="reveal">My journey into cinematic editing did not begin in a luxury studio or with state-of-the-art
+        workstations. At just 18 years old, looking back, the origin was pure curiosity fueled by a basic 2GB RAM
+        smartphone—a Redmi 5. While the technical limitations were immense, they became my greatest, most defining
+        asset. When processing power is scarce, you cannot hide behind flashy graphics; you are forced to rely solely on
+        the narrative. Those early constraints forged an unbreakable discipline within me, teaching me that precision,
+        pacing, and storytelling will always be profoundly more valuable than the tools used to craft them.</p>
+
+      <p class="reveal">Today, with over <span class="highlight-text">300+ wedding trailers crafted</span> across 3+
+        remarkable years, and navigating my role as the Lead Video Editor and founder of <strong>ZoomVista</strong>,
+        that philosophy remains unaltered. My specialization lies in producing high-end cinematic wedding trailers,
+        gripping teasers, and grand reels. My approach actively rejects abrupt, jarring cuts in favor of seamless,
+        liquid transitions. Every frame is subjected to premium color grading designed to evoke the precise atmosphere
+        of that singular day. But above all, I prioritize rigorous musical synchronization—where the crescendo of a
+        score effortlessly mirrors the crescendo of human emotion, ensuring the viewer feels the exact heartbeat of the
+        moment.</p>
+
+      <p class="reveal">Much of this trajectory and growth happened alongside my ongoing tenure at SD Photography, where
+        my professional foundation truly took shape. I hold a profound respect for Devansh Singh and the entire SD
+        Photography team for the guidance, space, and trust they placed in me early on. They provided the canvas upon
+        which I learned to paint, while allowing the core identity of ZoomVista to flourish.</p>
+
+      <p class="reveal" style="margin-bottom: 60px;">Looking forward, my vision for ZoomVista extends far beyond
+        geographical and creative boundaries. The ambition is unwavering: crafting uncompromising luxury narratives for
+        international clientele and high-end global studios. Because ultimately, love is a universal language, and my
+        life's work is translating it into breathtaking films that resonate for generations.</p>
+
+      <div class="reveal" style="text-align: center;">
+        <a href="index.html" class="btn btn-outline"
+          style="border-color: var(--accent-gold); color: var(--accent-gold);">Return to Portfolio</a>
+      </div>
+    </article>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-logo">ZoomVista</p>
+      <div class="footer-links">
+        <a href="https://instagram.com/naksh.films" target="_blank">Instagram</a>
+        <a href="https://vimeo.com/naksh.films" target="_blank">Vimeo</a>
+        <a href="mailto:contact@zoomvista.com">Email</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2025 ZoomVista · All Rights Reserved</p>
+  </footer>
+
+  <script src="script.js?v=4"></script>
+</body>
+
+</html>

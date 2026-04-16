@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoomVista Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: #2a2a2a;
+      --gold: #c8a97e;
+      --gold-dim: rgba(200, 169, 126, 0.15);
+      --text: #f0ede8;
+      --text-muted: #7a7672;
+      --danger: #e05555;
+      --success: #4CAF82;
+      --radius: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ======== LOGIN SCREEN ======== */
+    #loginScreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(ellipse at center, #1a150e 0%, #0a0a0a 70%);
+    }
+
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 360px;
+      text-align: center;
+    }
+
+    .login-logo {
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 32px;
+      color: var(--text);
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+
+    .login-input:focus { border-color: var(--gold); }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: #0a0a0a;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .login-btn:hover { opacity: 0.9; }
+    .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 10px; display: none; }
+
+    /* ======== ADMIN PANEL ======== */
+    #adminPanel { display: none; }
+
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-header-left { display: flex; align-items: center; gap: 12px; }
+    .admin-logo { font-size: 0.65rem; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; }
+    .admin-title { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+
+    .logout-btn {
+      padding: 8px 18px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    .admin-body { padding: 32px 28px; max-width: 1100px; margin: 0 auto; }
+
+    /* Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .admin-tab {
+      padding: 9px 22px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-tab.active { background: var(--gold); color: #0a0a0a; border-color: var(--gold); font-weight: 600; }
+    .admin-tab:hover:not(.active) { border-color: var(--gold); color: var(--gold); }
+
+    /* Tab content */
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    .section-title {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    /* Add Video Form */
+    .add-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+    .form-input, .form-select, .form-textarea {
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--gold); }
+    .form-select { cursor: pointer; }
+
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+      grid-column: 1 / -1;
+    }
+
+    .add-btn {
+      padding: 12px 28px;
+      background: var(--gold);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity 0.2s;
+    }
+    .add-btn:hover { opacity: 0.88; }
+
+    .success-msg {
+      display: inline-block;
+      margin-left: 12px;
+      font-size: 0.8rem;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    /* Video Grid Cards */
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .video-admin-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .video-admin-card:hover { border-color: var(--gold); }
+
+    .video-admin-preview {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%;
+      background: var(--surface2);
+    }
+    .video-admin-preview.vertical { padding-top: 100%; }
+
+    .video-admin-preview iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-admin-info {
+      padding: 14px 16px;
+    }
+
+    .video-admin-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .video-admin-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .video-admin-actions { display: flex; gap: 8px; }
+
+    .delete-btn {
+      flex: 1;
+      padding: 8px;
+      background: transparent;
+      border: 1px solid var(--danger);
+      border-radius: 7px;
+      color: var(--danger);
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .delete-btn:hover { background: var(--danger); color: white; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px;
+      color: var(--text-muted);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    .empty-state svg { width: 40px; height: 40px; fill: var(--text-muted); opacity: 0.4; margin-bottom: 12px; }
+
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .admin-body { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======== LOGIN ======== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <p class="login-logo">ZoomVista</p>
+    <h2 class="login-title">Admin Panel</h2>
+    <input type="password" id="passwordInput" class="login-input" placeholder="Enter Password" onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">Login</button>
+    <p class="login-error" id="loginError">❌ Incorrect password</p>
+  </div>
+</div>
+
+<!-- ======== ADMIN PANEL ======== -->
+<div id="adminPanel">
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <p class="admin-logo">ZoomVista</p>
+      <span style="color: var(--border)">|</span>
+      <p class="admin-title">Video Manager</p>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="trailers">Trailers</button>
+      <button class="admin-tab" data-tab="reactions">Client Reactions</button>
+      <button class="admin-tab" data-tab="breakdowns">Breakdowns</button>
+      <button class="admin-tab" data-tab="reels">Reels & Shorts</button>
+    </div>
+
+    <!-- ===== TRAILERS TAB ===== -->
+    <div class="tab-section active" id="tab-trailers">
+      <p class="section-title">Add New Trailer</p>
+      <div class="add-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Title</label>
+            <input class="form-input" id="t-title" placeholder="e.g. Kinaree x Vishal">
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input class="form-input" id="t-year" placeholder="e.g. 2025">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Gumlet Embed URL</label>
+            <input class="form-input" id="t-url" placeholder="https://play.gumlet.io/embed/YOUR_ID?...">
+          </div>
+        </div>
+        <button class="add-btn" onclick="addVideo('trailers')">+ Add Trailer</button>
+        <span class="success-msg" id="succ-trailers">✓ Added!</span>
+      </div>
+
+      <p class="section-title" style="margin-bottom: 16px;">All Trailers</p>
+      <div class="videos-grid" id="grid-trailers"></div>
+    </div>
+
+    <!-- ===== REACTIONS TAB ===== -->
+    <div class="tab-section" id="tab-reactions">
+      <p class="section-title">Add New Client Reaction</p>
+      <div class="add-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Client Name</label>
+            <input class="form-input" id="r-title" placeholder="e.g. Priya & Arjun Sharma">
+          </div>
+          <div class="form-group">
+            <label>Year</label>
+            <input class="form-input" id="r-year" placeholder="e.g. 2024">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Gumlet Embed URL</label>
+            <input class="form-input" id="r-url" placeholder="https://play.gumlet.io/embed/YOUR_ID?...">
+          </div>
+        </div>
+        <button class="add-btn" onclick="addVideo('reactions')">+ Add Reaction</button>
+        <span class="success-msg" id="succ-reactions">✓ Added!</span>
+      </div>
+
+      <p class="section-title" style="margin-bottom: 16px;">All Reactions</p>
+      <div class="videos-grid" id="grid-reactions"></div>
+    </div>
+
+    <!-- ===== BREAKDOWNS TAB ===== -->
+    <div class="tab-section" id="tab-breakdowns">
+      <p class="section-title">Add New Breakdown</p>
+      <div class="add-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Title</label>
+            <input class="form-input" id="b-title" placeholder="e.g. Timeline Breakdown">
+          </div>
+          <div class="form-group">
+            <label>Aspect Ratio</label>
+            <select class="form-select" id="b-ratio">
+              <option value="vertical">Vertical (9:16)</option>
+              <option value="horizontal">Horizontal (16:9)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Gumlet Embed URL</label>
+            <input class="form-input" id="b-url" placeholder="https://play.gumlet.io/embed/YOUR_ID?...">
+          </div>
+        </div>
+        <button class="add-btn" onclick="addVideo('breakdowns')">+ Add Breakdown</button>
+        <span class="success-msg" id="succ-breakdowns">✓ Added!</span>
+      </div>
+
+      <p class="section-title" style="margin-bottom: 16px;">All Breakdowns</p>
+      <div class="videos-grid" id="grid-breakdowns"></div>
+    </div>
+
+    <!-- ===== REELS TAB ===== -->
+    <div class="tab-section" id="tab-reels">
+      <p class="section-title">Add New Reel</p>
+      <div class="add-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Reel Title</label>
+            <input class="form-input" id="rl-title" placeholder="e.g. Haldi Vibes ✨">
+          </div>
+          <div class="form-group">
+            <label>Aspect Ratio</label>
+            <select class="form-select" id="rl-ratio">
+              <option value="vertical">Vertical (9:16)</option>
+              <option value="horizontal">Horizontal (16:9)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Gumlet Embed URL</label>
+            <input class="form-input" id="rl-url" placeholder="https://play.gumlet.io/embed/YOUR_ID?...">
+          </div>
+        </div>
+        <button class="add-btn" onclick="addVideo('reels')">+ Add Reel</button>
+        <span class="success-msg" id="succ-reels">✓ Added!</span>
+      </div>
+
+      <p class="section-title" style="margin-bottom: 16px;">All Reels</p>
+      <div class="videos-grid" id="grid-reels"></div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div><!-- /adminPanel -->
+
+<script>
+  const PASSWORD = 'Vista';
+
+  // ===== AUTH =====
+  function doLogin() {
+    const val = document.getElementById('passwordInput').value;
+    if (val === PASSWORD) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      renderAll();
+    } else {
+      const err = document.getElementById('loginError');
+      err.style.display = 'block';
+      setTimeout(() => err.style.display = 'none', 2500);
+    }
+  }
+
+  function doLogout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('passwordInput').value = '';
+  }
+
+  // ===== TABS =====
+  document.querySelectorAll('.admin-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ===== DATA STORAGE =====
+  function getData(key) {
+    return JSON.parse(localStorage.getItem('nk_' + key) || '[]');
+  }
+
+  function saveData(key, arr) {
+    localStorage.setItem('nk_' + key, JSON.stringify(arr));
+  }
+
+  // ===== SEED EXISTING VIDEOS =====
+  function seedIfEmpty() {
+    // Seed trailers if empty
+    if (getData('trailers').length === 0) {
+      const trailers = [
+        { id: Date.now() + 1, title: 'Kinaree x Vishal', year: '2025', url: 'https://play.gumlet.io/embed/69dea1a81fa8b408f622060b?background=false&autoplay=false&loop=false&disable_player_controls=false', ratio: 'horizontal' },
+        { id: Date.now() + 2, title: 'Shambhavi x Amoolya', year: '2025', url: 'https://play.gumlet.io/embed/69dea8dfdbd80813257f2b3c?background=false&autoplay=false&loop=false&disable_player_controls=false', ratio: 'horizontal' },
+        { id: Date.now() + 3, title: 'Riddhi x Shishir', year: '2024', url: 'https://play.gumlet.io/embed/69dea8df0e45fb2cfcef0d13?background=false&autoplay=false&loop=false&disable_player_controls=false', ratio: 'horizontal' },
+        { id: Date.now() + 4, title: 'Aastha x Shiva', year: '2024', url: 'https://play.gumlet.io/embed/69dea1840e45fb2cfcee7081?background=false&autoplay=false&loop=false&disable_player_controls=false', ratio: 'horizontal' },
+        { id: Date.now() + 5, title: 'Akshay x Sonakshi', year: '2023', url: 'https://play.gumlet.io/embed/69dea8dfdbd80813257f2b45?background=false&autoplay=false&loop=false&disable_player_controls=false', ratio: 'horizontal' },
+      ];
+      saveData('trailers', trailers);
+    }
+
+    // Seed reels if empty
+    if (getData('reels').length === 0) {
+      const reels = [
+        { id: Date.now() + 11, title: 'Reel 1', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c93?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 12, title: 'Reel 2', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c68?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 13, title: 'Reel 3', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c7d?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 14, title: 'Reel 4', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c6c?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 15, title: 'Reel 5', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c66?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 16, title: 'Reel 6', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69e004a3aa34550ef76abb25?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 17, title: 'Reel 7', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a2aa34550ef76abb14?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 18, title: 'Reel 8', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e004a3a9b612503f1905c2?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 19, title: 'Reel 9', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69e004a3e034f96e26e07c87?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 20, title: 'Reel 10', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69e00013a9b612503f188d77?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+      ];
+      saveData('reels', reels);
+    }
+
+    // Seed breakdowns if empty
+    if (getData('breakdowns').length === 0) {
+      const breakdowns = [
+        { id: Date.now() + 21, title: 'Timeline Breakdown 1', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69dec4621fa8b408f62504fa?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 22, title: 'Timeline Breakdown 2', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69dec4620e45fb2cfcf17169?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 23, title: 'Timeline Breakdown 3', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69dec462dbd8081325818aa4?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+        { id: Date.now() + 24, title: 'Timeline Breakdown 4', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69dffd55a9b612503f1845fc?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+      ];
+      saveData('breakdowns', breakdowns);
+    }
+  }
+
+  // ===== ADD VIDEO =====
+  function addVideo(type) {
+    const prefixes = { trailers: 't', reactions: 'r', breakdowns: 'b', reels: 'rl' };
+    const p = prefixes[type];
+    const title = document.getElementById(p + '-title').value.trim();
+    const url = document.getElementById(p + '-url').value.trim();
+    const year = document.getElementById(p + '-year') ? document.getElementById(p + '-year').value.trim() : '';
+    const ratio = document.getElementById(p + '-ratio') ? document.getElementById(p + '-ratio').value : 'horizontal';
+
+    if (!title || !url) { alert('Please fill in title and URL!'); return; }
+
+    const arr = getData(type);
+    arr.push({ id: Date.now(), title, year, url, ratio });
+    saveData(type, arr);
+
+    // Clear inputs
+    document.getElementById(p + '-title').value = '';
+    document.getElementById(p + '-url').value = '';
+    if (document.getElementById(p + '-year')) document.getElementById(p + '-year').value = '';
+
+    // Success flash
+    const msg = document.getElementById('succ-' + type);
+    msg.style.opacity = '1';
+    setTimeout(() => msg.style.opacity = '0', 2500);
+
+    renderGrid(type);
+  }
+
+  // ===== DELETE VIDEO =====
+  function deleteVideo(type, id) {
+    if (!confirm('Delete this video?')) return;
+    const arr = getData(type).filter(v => v.id !== id);
+    saveData(type, arr);
+    renderGrid(type);
+  }
+
+  // ===== RENDER GRID =====
+  function renderGrid(type) {
+    const grid = document.getElementById('grid-' + type);
+    const arr = getData(type);
+
+    if (arr.length === 0) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <p>No videos yet. Add one above!</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = arr.map(v => {
+      const isVertical = v.ratio === 'vertical';
+      const pt = isVertical ? '177.78%' : '56.25%';
+      return `
+        <div class="video-admin-card">
+          <div class="video-admin-preview" style="padding-top: ${pt};">
+            <iframe loading="lazy" src="${v.url}" style="border:none; position:absolute; inset:0; width:100%; height:100%;"
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;clipboard-write;" referrerpolicy="origin"></iframe>
+          </div>
+          <div class="video-admin-info">
+            <p class="video-admin-title">${v.title}</p>
+            <p class="video-admin-meta">${v.year || ''} &nbsp;<span class="badge">${v.ratio || 'horizontal'}</span></p>
+            <div class="video-admin-actions">
+              <button class="delete-btn" onclick="deleteVideo('${type}', ${v.id})">🗑 Delete</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderAll() {
+    seedIfEmpty();
+    ['trailers', 'reactions', 'breakdowns', 'reels'].forEach(renderGrid);
+  }
+</script>
+</body>
+</html>
