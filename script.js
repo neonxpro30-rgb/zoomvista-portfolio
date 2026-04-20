@@ -159,6 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
     saveData('reels', defaultReels);
   }
 
+  // Force-sync specific new content if not present (Migration)
+  const currentReactions = getData('reactions');
+  const newReactionId = 21;
+  const exists = currentReactions.some(v => v.id === newReactionId);
+  if (!exists) {
+    currentReactions.push({ 
+      id: newReactionId, 
+      title: 'Client Feedback — ZoomVista', 
+      year: '2024', 
+      ratio: 'horizontal', 
+      url: 'https://play.gumlet.io/embed/69e694c3d04993c17e0940d4?background=false&autoplay=false&loop=false&disable_player_controls=false' 
+    });
+    saveData('reactions', currentReactions);
+  }
+
   // Inject generated HTML into the grid
   const videoGrid = document.querySelector('.video-grid');
   if (videoGrid) {
