@@ -132,7 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 5, title: 'Akshay x Sonakshi', year: '2023', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69dea8dfdbd80813257f2b45?background=false&autoplay=false&loop=false&disable_player_controls=false' }
     ];
     const defaultReactions = [
-      { id: 6, title: 'Priya & Arjun Sharma', year: '2024', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69deaaebdbd80813257fc6eb?background=false&autoplay=false&loop=false&disable_player_controls=false' }
+      { id: 6, title: 'Priya & Arjun Sharma', year: '2024', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69deaaebdbd80813257fc6eb?background=false&autoplay=false&loop=false&disable_player_controls=false' },
+      { id: 21, title: 'Client Feedback — ZoomVista', year: '2024', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e694c3d04993c17e0940d4?background=false&autoplay=false&loop=false&disable_player_controls=false' }
     ];
     const defaultBreakdowns = [
       { id: 7, title: 'Timeline Breakdown 1', ratio: 'vertical', url: 'https://play.gumlet.io/embed/69dec4621fa8b408f62504fa?background=false&autoplay=false&loop=false&disable_player_controls=false' },
