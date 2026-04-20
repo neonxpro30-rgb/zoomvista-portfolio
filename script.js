@@ -132,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 5, title: 'Akshay x Sonakshi', year: '2023', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69dea8dfdbd80813257f2b45?background=false&autoplay=false&loop=false&disable_player_controls=false' }
     ];
     const defaultReactions = [
-      { id: 6, title: 'Priya & Arjun Sharma', year: '2024', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69deaaebdbd80813257fc6eb?background=false&autoplay=false&loop=false&disable_player_controls=false' },
       { id: 21, title: 'Client Feedback — ZoomVista', year: '2024', ratio: 'horizontal', url: 'https://play.gumlet.io/embed/69e694c3d04993c17e0940d4?background=false&autoplay=false&loop=false&disable_player_controls=false' }
     ];
     const defaultBreakdowns = [
@@ -160,8 +159,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Force-sync specific new content if not present (Migration)
-  const currentReactions = getData('reactions');
+  let currentReactions = getData('reactions');
   const newReactionId = 21;
+  const oldReactionId = 6;
+  
+  // Remove old problematic reaction if exists
+  currentReactions = currentReactions.filter(v => v.id !== oldReactionId);
+
   const exists = currentReactions.some(v => v.id === newReactionId);
   if (!exists) {
     currentReactions.push({ 
@@ -171,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ratio: 'horizontal', 
       url: 'https://play.gumlet.io/embed/69e694c3d04993c17e0940d4?background=false&autoplay=false&loop=false&disable_player_controls=false' 
     });
-    saveData('reactions', currentReactions);
   }
+  saveData('reactions', currentReactions);
 
   // Inject generated HTML into the grid
   const videoGrid = document.querySelector('.video-grid');
